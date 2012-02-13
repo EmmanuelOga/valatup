@@ -1,0 +1,12 @@
+include_rules
+
+: foreach *.vala |> !fast-vapi |> {vapis}
+
+VAPISFILES = windows/window.vapi
+VAPISPARAMS += --use-fast-vapi=windows/window.vapi
+
+: main.vala | $(VAPISFILES) |> !valacwithvapis |>
+
+# Now that all the .c files should be generated, build the main file.
+
+: *.c windows/*.c |> !cc |> main
