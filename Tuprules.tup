@@ -1,10 +1,23 @@
 .gitignore
 
+# Packages that all vala files will use.
 VALAPKGS += --pkg gtk+-3.0
+
+# Flags for libraries that will be needed when building the binary.
 CPKGFLAGS += `pkg-config --cflags gtk+-3.0`
 CPKGLIBS += `pkg-config --libs gtk+-3.0`
 
+# A build process using fast vapi files will be used
+# https://live.gnome.org/Vala/Documentation/ParallelBuilds
+
+# Generate the vapi files.
 !fast-vapi = |> valac --fast-vapi=%B.vapi %f |> %B.vapi
-!valacnodep = |> valac $(VALAPKGS) %f -C |> %B.c
-!valacwithvapis = |> valac $(VAPISPARAMS) $(VALAPKGS) %f -o %o -C |> %B.c
-!cc = |> gcc $(CPKGFLAGS) $(CPKGLIBS) %f -o %o |>
+
+# Generate C files from vala files which do not depend on other .vala files
+!valac = |> valac $(VAPISPARAMS) $(VALAPKGS) %f -C |> %B.c
+
+# Build .c files into object files.
+!ccobj = |> gcc $(CPKGFLAGS) %f -o %o -c |> %B.o
+
+# Build an executable.
+!ccbin = |> gcc $(CPKGLIBS) %f -o %o |>

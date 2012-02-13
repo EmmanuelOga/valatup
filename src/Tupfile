@@ -2,11 +2,12 @@ include_rules
 
 : foreach *.vala |> !fast-vapi |> {vapis}
 
+# Main is special since it has dependencies.
 VAPISFILES = windows/window.vapi
 VAPISPARAMS += --use-fast-vapi=windows/window.vapi
+: main.vala | $(VAPISFILES) |> !valac |>
 
-: main.vala | $(VAPISFILES) |> !valacwithvapis |>
+: *.c |> !ccobj |>
 
-# Now that all the .c files should be generated, build the main file.
-
-: *.c windows/*.c |> !cc |> main
+# Now that all the .o files should be generated, build object file.
+: main.o windows/window.o |> !ccbin |> main
