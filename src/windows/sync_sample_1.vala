@@ -1,11 +1,11 @@
 using Gtk;
 
-public class SyncSample : Window {
+public class SyncSample1 : Window {
 
     private SpinButton spin_box;
     private Scale slider;
 
-    public SyncSample () {
+    public SyncSample1 () {
         this.title = "Enter your age";
         this.window_position = WindowPosition.CENTER;
         this.destroy.connect (Gtk.main_quit);

@@ -1,13 +1,17 @@
 include_rules
 
-: foreach *.vala |> !fast-vapi |> {vapis}
+: foreach *.vala |> !fast-vapi |>
 
 # Main is special since it has dependencies.
-VAPISFILES = windows/window.vapi
-VAPISPARAMS += --use-fast-vapi=windows/window.vapi
+VAPISFILES += windows/sync_sample_1.vapi \
+              windows/sync_sample_2.vapi
+
+VAPISPARAMS += --use-fast-vapi=windows/sync_sample_1.vapi \
+               --use-fast-vapi=windows/sync_sample_2.vapi
+
 : main.vala | $(VAPISFILES) |> !valac |>
 
-: *.c |> !ccobj |>
+: foreach *.c |> !ccobj |>
 
 # Now that all the .o files should be generated, build object file.
-: main.o windows/window.o |> !ccbin |> main
+: main.o windows/sync_sample_1.o windows/sync_sample_2.o |> !ccbin |> main

@@ -1,5 +1,5 @@
 include_rules
 
-: *.vala |> !fast-vapi |>
-: *.vala |> !valac     |>
-: *.c    |> !ccobj     |>
+: foreach *.vala |> !fast-vapi |>
+: foreach *.vala |> !valac     |>
+: foreach *.c    |> !ccobj     |>
