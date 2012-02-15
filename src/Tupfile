@@ -3,11 +3,16 @@ include_rules
 : foreach *.vala |> !fast-vapi |>
 
 # Main is special since it has dependencies.
-VAPISFILES += windows/sync_sample_1.vapi \
-              windows/sync_sample_2.vapi
+# Wildcards are allowed - tup will parse the windows/ directory first and know which .vapi files
+# will be created.
+VAPISFILES += windows/*.vapi windows/vapilist.txt
 
-VAPISPARAMS += --use-fast-vapi=windows/sync_sample_1.vapi \
-               --use-fast-vapi=windows/sync_sample_2.vapi
+
+#VAPISPARAMS += --use-fast-vapi=windows/sync_sample_1.vapi \
+#               --use-fast-vapi=windows/sync_sample_2.vapi
+# Note that tup doesn't do the backtic-expansion here. This is passed verbatim to the shell, which
+# will then run the gen_vapisparams.sh script to create the --use-fast-vapi args
+VAPISPARAMS += `./gen_vapisparams.sh windows/vapilist.txt`
 
 : main.vala | $(VAPISFILES) |> !valac |>
 
