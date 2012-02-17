@@ -13,6 +13,9 @@ CPKGLIBS += `pkg-config --libs gtk+-3.0`
 # Generate the vapi files.
 !fast-vapi = |> valac --fast-vapi=%B.vapi %f |> %B.vapi
 
+# Generate a list of existing vapi files on a directory
+!gen_vapilist = |> for i in %f; do echo $i; done > %o |>
+
 # Generate C files from vala files which do not depend on other .vala files
 !valac = |> valac $(VAPISPARAMS) $(VALAPKGS) %f -C |> %B.c
 

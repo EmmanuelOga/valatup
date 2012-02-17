@@ -1,6 +1,6 @@
 include_rules
 
-: foreach *.vala |> !fast-vapi |>
-: foreach *.vala |> !valac     |>
-: foreach *.c    |> !ccobj     |>
-: *.vapi |> for i in %f; do echo $i; done > %o |> vapilist.txt
+: foreach *.vala |> !fast-vapi    |>
+: *.vapi         |> !gen_vapilist |> vapilist.txt
+: foreach *.vala |> !valac        |>
+: foreach *.c    |> !ccobj        |>
